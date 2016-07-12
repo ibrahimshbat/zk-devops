@@ -15,6 +15,10 @@ This project aims to provide a set of devops tools to make ZooKeeper configurati
 * ZooKeeper cfg file can be customized in https://github.com/hanm/zk-devops/blob/master/ansible/role/zookeeper/files/zoo.cfg
 * To run the playbook, simply type 'ansible-playbook -i inventory/hosts role/zookeeper/setup.yaml'
 
+## Performance and scalability
+* 5 minutes for a clean install on a 3 nodes cluster (install dependencies + download source + build + start)
+* 15 minutes for a clean install on a 23 nodes cluster.
+
 ## TODO
 * Improve the scripts to support more type of operations (clean, reconfig, restart, etc).
 * Support provisioning nodes given cloud credentials (AWS, GCP, Azure) automatically. 

@@ -1,0 +1,9 @@
+# @fileoverview - Install ant on Ubuntu.
+---
+- hosts: all
+  tasks:
+  - name: Install Ant
+    become: yes
+    apt: pkg={{ item }} update_cache=yes cache_valid_time=3600 force=yes
+    with_items:
+     - ant

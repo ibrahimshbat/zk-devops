@@ -1,0 +1,54 @@
+# @fileoverview - ZooKeeper playbook.
+---
+- hosts: all
+  vars:
+    sourceURL: http://people.apache.org/~cnauroth/zookeeper-3.5.2-alpha-candidate-1/zookeeper-3.5.2-alpha.tar.gz
+    fileName: zookeeper-3.5.2-alpha #FIXME: this should be inferred.
+    myidDir: /tmp/zookeeper # Full path to myid file, must match the value in zoo.cfg template.
+  tasks: 
+    - name: Create a temp folder for storing ZooKeeper source
+      shell: mktemp -d
+      register: ZK
+      
+    - name: Set Permission on ZooKeeper folder
+      shell: chmod 777 {{ ZK.stdout }}
+      
+    - name: ZooKeeper source folder prepared
+      debug: msg='{{ ZK.stdout }}'
+      
+    - name: Download ZooKeeper source code
+      get_url: dest={{ ZK.stdout }}/zookeeper.tar.gz
+               url={{ sourceURL }}
+
+    - name: Unpack ZooKeeper source code
+      unarchive: copy=no
+                 dest={{ ZK.stdout }}/
+                 src={{ ZK.stdout }}/zookeeper.tar.gz
+                 
+    - name: Compile ZooKeeper
+      shell: cd {{ ZK.stdout }}/{{ fileName }} && ant compile
+      
+    - name: Ensure zookeeper temp folder does not exist
+      become: yes
+      shell: rm -rf {{ myidDir }}
+      
+    - name: Create folder for myid file
+      become: yes
+      shell: mkdir {{ myidDir }}
+      
+    - name: Set myid file
+      become: yes
+      template:
+        follow: yes
+        src: ./files/myid
+        dest: "{{ myidDir }}/myid"
+
+    - name: Set zoo.cfg file
+      become: yes
+      template:
+        follow: yes
+        src: ./files/zoo.cfg
+        dest: "{{ ZK.stdout }}/{{ fileName }}/conf/zoo.cfg"
+        
+    - name: Start ZooKeeper process
+      shell: "{{ ZK.stdout }}/{{ fileName }}/bin/zkServer.sh start"

@@ -1,0 +1,5 @@
+# @fileoverview - Install, configure and start a ZooKeeper ensemble and all of its dependencies.
+---
+- include: java.yaml
+- include: ant.yaml
+- include: zookeeper.yaml

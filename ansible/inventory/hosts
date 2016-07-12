@@ -1,0 +1,5 @@
+[zookeeper-servers]
+zk-server-name-1  ansible_ssh_host=200.28.209.157 ansible_ssh_port=22 ansible_ssh_user=root ansible_ssh_pass=password
+zk-server-name-2  ansible_ssh_host=200.28.212.191 ansible_ssh_port=22 ansible_ssh_user=root ansible_ssh_pass=password
+zk-server-name-3  ansible_ssh_host=200.28.196.71 ansible_ssh_port=22 ansible_ssh_user=root ansible_ssh_pass=password
+
